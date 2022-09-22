@@ -1,5 +1,5 @@
 import cv2
-from imread_from_url import imread_from_url
+#from imread_from_url import imread_from_url
 import os
 
 from YOLOv7 import YOLOv7
@@ -28,4 +28,5 @@ for filename in filenames:
     #cv2.namedWindow("Detected Objects", cv2.WINDOW_NORMAL)
     #cv2.imshow("Detected Objects", combined_img)
     cv2.imwrite("doc/img/{}.jpg".format(filename), combined_img)
+    print('{}.jpg完成检测'.format(filename))
     #cv2.waitKey(0)
