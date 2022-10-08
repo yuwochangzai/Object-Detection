@@ -10,7 +10,8 @@ model_path = "E:/github/machinelearning-samples/samples/csharp/getting-started/D
 img_folder = 'E:/github/machinelearning-samples/samples/csharp/getting-started/DeepLearning_ObjectDetection_Onnx/ObjectDetectionConsoleApp/assets/images'
 yolov7_detector = YOLOv7(model_path, conf_thres=0.3, iou_thres=0.5)
 
-#检查可疑图片    
+#检查可疑图片  
+# boxes坐标格式：[左上角横坐标，左上角纵坐标，右下角横坐标，右下角纵坐标]
 def checkDubious(boxes,class_ids):
     count = len(class_ids)
     for p in range(count):
@@ -21,7 +22,8 @@ def checkDubious(boxes,class_ids):
                 continue
             person = boxes[p]
             car = boxes[c]
-            if (car[0]>=person[0] and car[0]<=person[3]) or (person[0]>=car[0] and person[0]<=car[3]) :
+            # 取不相交的对立事件
+            if not ( person[1] > car[3] or person[0]>car[2] or car[1]>person[3] or car[0]>person[2]) :
                 return True
     return False
 
@@ -49,7 +51,7 @@ for filename in filenames:
     #检测是否可疑图片（存在person矩形框与car矩形框相交的情况）
     if checkDubious(boxes,class_ids):
         #cv2.imwrite("doc/img/dubious/{}.jpg".format(filename), combined_img)
-        shutil.copy(filepath,'doc/img/dubious/')
+        shutil.copy("doc/img/{}.jpg".format(filename),'doc/img/dubious/')
     #cv2.waitKey(0)
 
 
